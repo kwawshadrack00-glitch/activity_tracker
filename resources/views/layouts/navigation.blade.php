@@ -5,14 +5,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
+                    <a href="{{ route('activities.index') }}" class="flex items-center">
+                    <x-application-logo width="32px" height="32px" />
+                </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.index')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
@@ -26,38 +26,57 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+            <!-- User Profile Dropdown -->
+            <div class="ms-3 relative">
+                <!-- 1. Added @click to toggle the 'open' state -->
+                <button @click="open = ! open" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                    <img src="{{ Auth::user()->profile_photo_url }}" 
+                         alt="Profile" 
+                         class="w-6 h-6 rounded-full object-cover mr-2 border border-gray-200">
+        
+                    <div>{{ Auth::user()->first_name }}</div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                    <div class="ms-1">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </button>
+
+                <!-- 2. Added x-show and @click.away to control visibility -->
+                <div x-show="open" 
+                     @click.away="open = false" 
+                     class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                     style="display: none;"> <!-- style="display: none" prevents flickering on load -->
+        
+                    <div class="px-4 py-3 border-b border-gray-100 flex items-center gap-3">
+                        <img src="{{ Auth::user()->profile_photo_url }}" 
+                             alt="Profile" 
+                             class="w-10 h-10 rounded-full object-cover border border-gray-200 shadow-sm">
+            
+                        <div class="flex flex-col overflow-hidden">
+                            <span class="text-sm font-bold text-gray-800 truncate">
+                                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                            </span>
+                           <span class="text-xs text-gray-500 truncate">
+                                {{ Auth::user()->email }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer">
+                        <a href="{{ route('profile.edit') }}" class="block w-full">Profile Settings</a>
+                    </div>
+
+                    <div class="border-t border-gray-100"></div>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition cursor-pointer">
+                            {{ __('Log Out') }}
                         </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+                    </form>
+                </div>
             </div>
 
             <!-- Hamburger -->

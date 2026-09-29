@@ -31,9 +31,12 @@
                                 <td class="p-3 border font-semibold">{{ $update->activity->description }}</td>
                                 <td class="p-3 border">{{ $update->user->first_name }} {{ $update->user->last_name }}</td>
                                 <td class="p-3 border">
-                                    <span class="px-2 py-1 rounded text-xs font-bold {{ $update->status == 'done' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
-                                        {{ ucfirst($update->status) }}
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="h-2 w-2 rounded-full {{ $lastUpdate && $lastUpdate->status == 'done' ? 'bg-green-500' : 'bg-yellow-500' }}"></span>
+                                        <span class="text-sm font-medium {{ $lastUpdate && $lastUpdate->status == 'done' ? 'text-green-700' : 'text-yellow-700' }}">
+                                            {{ $lastUpdate ? ucfirst($lastUpdate->status) : 'Pending' }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-3 border italic">{{ $update->remark ?? 'No remark' }}</td>
                             </tr>

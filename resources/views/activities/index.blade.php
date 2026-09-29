@@ -7,6 +7,16 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6 border-l-4 border-indigo-500">
+                <h3 class="text-lg font-medium mb-4">Add New Activity</h3>
+                <form action="{{ route('activities.store') }}" method="POST" class="flex gap-4">
+                    @csrf
+                    <input type="text" name="description" placeholder="e.g. Monthly Server Audit" class="flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition font-semibold">
+                        + Add Activity
+                    </button>
+                </form>
+            </div>
             @if(session('success'))
                 <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
                     {{ session('success') }}
@@ -30,9 +40,12 @@
                             <tr>
                                 <td class="p-3 border">{{ $activity->description }}</td>
                                 <td class="p-3 border">
-                                    <span class="px-2 py-1 rounded text-xs font-bold {{ $lastUpdate && $lastUpdate->status == 'done' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
-                                        {{ $lastUpdate ? ucfirst($lastUpdate->status) : 'Pending' }}
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="h-2 w-2 rounded-full {{ $lastUpdate && $lastUpdate->status == 'done' ? 'bg-green-500' : 'bg-yellow-500' }}"></span>
+                                        <span class="text-sm font-medium {{ $lastUpdate && $lastUpdate->status == 'done' ? 'text-green-700' : 'text-yellow-700' }}">
+                                            {{ $lastUpdate ? ucfirst($lastUpdate->status) : 'Pending' }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="p-3 border">{{ $lastUpdate->remark ?? 'No remark' }}</td>
                                 <td class="p-3 border">

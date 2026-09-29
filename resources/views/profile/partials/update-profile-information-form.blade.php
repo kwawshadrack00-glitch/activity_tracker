@@ -17,10 +17,18 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        <!-- First Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-input-label for="first_name" :value="__('First Name')" />
+            <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name', $user->first_name)" required autofocus />
+            <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name', $user->last_name)" required />
+            <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
         <div>
@@ -45,6 +53,13 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <!-- Profile Photo URL -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-input-label for="profile_photo_url" :value="__('Profile Photo URL')" />
+            <x-text-input id="profile_photo_url" class="block mt-1 w-full" type="text" name="profile_photo_url" :value="old('profile_photo_url', $user->profile_photo_url)" />
+            <x-input-error :messages="$errors->get('profile_photo_url')" class="mt-2" />
         </div>
 
         <div class="flex items-center gap-4">

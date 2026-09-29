@@ -74,5 +74,19 @@ class ActivityController extends Controller
         $reportData = $updates->latest()->get();
 
         return view('activities.reports', compact('reportData', 'startDate', 'endDate'));
+
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'description' => 'required|string|max:255',
+        ]);
+
+        Activity::create([
+            'description' => $request->description,
+        ]);
+
+       return back()->with('success', 'New activity added successfully!');
     }
 }
